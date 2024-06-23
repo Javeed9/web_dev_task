@@ -13,15 +13,6 @@ function ChatList({chatList}) {
       isHighlight: false
     },
     {
-      name: "Syed Farha",
-      lastMessage: "Love you",
-      lastMessageTime: "12:00",
-      online: "online",
-      unread: 1,
-      isTyping: true,
-      isHighlight: false
-    },
-    {
       name: "Syed Javeed",
       lastMessage: "Me",
       lastMessageTime: "Now",
@@ -34,9 +25,6 @@ function ChatList({chatList}) {
   const testContactsData = [
     {
       name: "Syed Javeed",
-    },
-    {
-      name: "Syed Farha",
     },
     {
       name: "Syed Javeed",
