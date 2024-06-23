@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 
-const massageModel = mongoose.Schema(
+const messageModel = mongoose.Schema(
     {
         sender: {
             type: mongoose.Schema.Types.ObjectId,
@@ -20,6 +20,6 @@ const massageModel = mongoose.Schema(
     }
 )
 
-const massage = mongoose.model("massage", massageModel)
+const message = mongoose.model("message", messageModel)
 
-module.exports = massage; 
+module.exports = message; 

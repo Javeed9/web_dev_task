@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors');
 const app = express()
 const colors = require("colors")
 const dotenv = require("dotenv")
@@ -12,7 +13,11 @@ const { Notfound, ErrorHandler } = require("./middleware/errormidleware");
 const chatRouter = require('./Routes/chatRouter');
 connectDB();
 
-
+app.use(cors({
+    origin: '*', // Allows all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allows these methods
+    credentials: true, // Allows cookies to be sent and received between front-end and back-end
+}));
 
 
 app.use(express.json());
