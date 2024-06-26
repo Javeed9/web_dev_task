@@ -26,3 +26,14 @@ const response = await fetch('http://localhost:5000/api/user/login', {
     return await response.json();
 };
 
+export const getUsers = async () => {
+  const token = localStorage.getItem("auth");
+  const response = await fetch('http://localhost:5000/api/user', {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+  });
+  return await response.json();
+};

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { notify } from "../App";
-import { registerUser, login } from '../Services/api';
+import { registerUser, login } from '../Services/userApi';
 import { useGlobalContext } from "../Contexts";
 
 type Inputs = {

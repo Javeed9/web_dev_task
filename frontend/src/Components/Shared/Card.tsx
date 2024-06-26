@@ -17,6 +17,7 @@ function Card({name, lastMessage, lastMessageTime, online, avatarSrc, unread, is
     return (
         <div style={customStyles} className='flex gap-2 p-2 bg-[#161719] rounded-xl w-fit mx-2 my-2 hover:bg-[#1F2022]'>
             <Avatar
+                name={name}
                 avatarSrc={avatarSrc}
                 online={online}
                 customStyles = {{height: "3.25rem", width: "3.25rem", marginTop: "auto", marginLeft: "auto"}}

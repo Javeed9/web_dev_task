@@ -1,18 +1,21 @@
 import React from 'react';
 import Avatar, { onlineStatus } from './Avatar';
+import { useGlobalContext } from '../../Contexts';
 
 interface ChatMessageProps {
-    avatarSrc: string;
+    avatarSrc?: string;
     onlineStatus?: onlineStatus;
     senderName: string;
     message: string;
     time: string;
+    senderId?: string;
     status?: 'delivered' | 'seen';
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ avatarSrc, onlineStatus, senderName, message, time, status }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ avatarSrc, onlineStatus, senderName, message, time, status, senderId }) => {
+    const {user: {_id: userId}} = useGlobalContext();
     return (
-        <div className={`chat ${status === 'delivered' ? "chat-end" : "chat-start"}`}>
+        <div className={`chat ${senderId !== userId ? "chat-end" : "chat-start"} mx-2 p-4`}>
             <div className="chat-image avatar">
                 <Avatar
                     customStyles={{ width: '2.5rem', height: '2.5rem' }}

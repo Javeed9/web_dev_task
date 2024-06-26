@@ -13,7 +13,7 @@ function Sidebar() {
                 onClick={() => setAuth(false)}
             >Logout</button>
         </div>
-        <ChatList chatList={true}/>
+        <ChatList/>
     </div>
   )
 }
