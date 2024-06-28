@@ -21,6 +21,7 @@ export interface IMessage {
   sender: IUser;
   content: string;
   chat?: IChat;
+  createdAt? : string | undefined;
 }
 
 export type GlobalContent = {

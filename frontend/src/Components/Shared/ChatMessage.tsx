@@ -15,7 +15,7 @@ interface ChatMessageProps {
 const ChatMessage: React.FC<ChatMessageProps> = ({ avatarSrc, onlineStatus, senderName, message, time, status, senderId }) => {
     const {user: {_id: userId}} = useGlobalContext();
     return (
-        <div className={`chat ${senderId !== userId ? "chat-end" : "chat-start"} mx-2 p-4`}>
+        <div className={`chat ${senderId === userId ? "chat-end" : "chat-start"} mx-2 p-4`}>
             <div className="chat-image avatar">
                 <Avatar
                     customStyles={{ width: '2.5rem', height: '2.5rem' }}

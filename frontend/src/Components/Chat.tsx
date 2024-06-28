@@ -1,29 +1,21 @@
 import { useEffect, useState } from 'react';
 import { getAllMessages, sendMessage } from '../Services/messageApi';
 import ChatMessage from './Shared/ChatMessage';
-
+import { useGlobalContext } from '../Contexts';
 
 function Chat({chatId="6677ed1ce70a3576961ba3be"}: {chatId: string}) {
   const [textContent, setTextContent] = useState('');
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    const getMessages = async (chatId: string) => {
-      const response = await getAllMessages(chatId)
-      setMessages(response);
-    }
-  }, [])
+  const { messages } = useGlobalContext();
+  console.log(messages);
   return (
     <div
     className='w-[calc(100%-390px)] h-[95vh] absolute top-[2.5vh] left-[365px] border border-[white] bg-[#1F2022] rounded-md'
     >
       <div className='!h-[85vh] overflow-scroll'>
-        
-      <ChatMessage senderName = "Syed" message = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo similique voluptatibus ea dolorum officiis cumque eum praesentium commodi magnam, consequatur dolores quae dolorem labore ducimus temporibus recusandae nisi velit ipsam?" time = "20:28" senderId='1'/>
-      <ChatMessage senderName = "Syed" message = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo similique voluptatibus ea dolorum officiis cumque eum praesentium commodi magnam, consequatur dolores quae dolorem labore ducimus temporibus recusandae nisi velit ipsam?" time = "20:28" senderId='1'/>
-      <ChatMessage senderName = "Syed" message = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo similique voluptatibus ea dolorum officiis cumque eum praesentium commodi magnam, consequatur dolores quae dolorem labore ducimus temporibus recusandae nisi velit ipsam?" time = "20:28" senderId='1'/>
-      <ChatMessage senderName = "Syed" message = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo similique voluptatibus ea dolorum officiis cumque eum praesentium commodi magnam, consequatur dolores quae dolorem labore ducimus temporibus recusandae nisi velit ipsam?" time = "20:28" senderId='1'/>
-      <ChatMessage senderName = "Syed" message = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo similique voluptatibus ea dolorum officiis cumque eum praesentium commodi magnam, consequatur dolores quae dolorem labore ducimus temporibus recusandae nisi velit ipsam?" time = "20:28" senderId='1'/>
+        {messages.map((message) => {
+          const time = new Date(message.createdAt).getHours() + ':' + new Date(message.createdAt).getMinutes();
+          return <ChatMessage senderName = {message.sender.name} message = {message.content} time = {time} senderId={message.sender._id}/>
+        })}
       </div>
       
       <div className='flex w-full absolute bottom-4 left-[2.5%] gap-[2.5%]'>

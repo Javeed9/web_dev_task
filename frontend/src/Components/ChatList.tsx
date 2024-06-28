@@ -52,7 +52,6 @@ function ChatList() {
             const response = accessChat(user._id)
             const messages = await getAllMessages(response._id)
             setMessages(messages)
-            
           }}
           name={user.users[0]._id === userId ? user.users[1].name : user.users[0].name} lastMessage={user.lastMessage} lastMessageTime={user.lastMessageTime} online="online" unread={user.unread} isTyping={user.isTyping} customStyles={{backgroundColor: `${user.isHighlight && '#1F2022'}`}}/>
         )) ) : (contacts.map ( (user) => (
@@ -60,7 +59,6 @@ function ChatList() {
             const response = accessChat(user._id)
             const messages = await getAllMessages(response._id)
             setMessages(messages)
-            console.log(messages);
           }}>
             <Card name={user.name} />
           </div>
