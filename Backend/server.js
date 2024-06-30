@@ -40,15 +40,15 @@ const io = require('socket.io')(server, {
         // Configure CORS to allow the backend socket to connect with the frontend socket
         // This is necessary when the frontend and backend are running on different ports
         // In this case, the frontend is running on http://localhost:3000
-        origin: "http://localhost:3000",
+        origin: "*",
     }
 })
 io.on('connection', (socket) => {
     // console.log('connected to socket.io')
 
     socket.on('setup', (userData) => {
+        console.log(userData.name, "joined server")
         socket.join(userData._id);
-        // console.log(userData.name)
         socket.emit('connected')
     })
     socket.on('join chat', (room) => {
@@ -58,16 +58,16 @@ io.on('connection', (socket) => {
     socket.on('typing', (room) => { socket.in(room).emit("typing") })
     socket.on('stop typing', (room) => { socket.in(room).emit('stop typing') })
     socket.on('newMessage', (newMessage) => {
-        console.log(newMessage.content)
         try {
+            console.log(newMessage);
             var chat = newMessage.chat;
             if (!chat.users) {
                 console.log('chat.users is not defined');
                 return;
             }
-
             chat.users.forEach(user => {
-                if (user._id === newMessage.sender._id) return;
+                // console.log(user);
+                // if (user._id === newMessage.sender._id) return;
                 socket.in(user._id).emit('messageReceived', newMessage); // Use io.to() to broadcast to all clients in the room.
             });
         } catch (error) {

@@ -28,9 +28,11 @@ export type GlobalContent = {
   auth: boolean;
   user: IUser;
   messages: IMessage[];
+  chatId: string
   setUser: (user: IUser) => void;
   setAuth: (auth: boolean) => void;
   setMessages: (messages: IMessage[]) => void;  // Ensure this function is implemented in createContext default.
+  setChatId: (id: string) => void
 };
 
 export const MyGlobalContext = createContext<GlobalContent>({
@@ -75,9 +77,11 @@ export const MyGlobalContext = createContext<GlobalContent>({
       }
     }
   }],
+  chatId: "",
   setUser: () => {},
   setAuth: () => {},
   setMessages: () => {}, // Added this to match the declared type.
+  setChatId: () => {}
 });
 
 export const useGlobalContext = () => useContext(MyGlobalContext);

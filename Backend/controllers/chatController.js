@@ -4,7 +4,6 @@ const Chat = require('../Model/chatModel')
 const User = require('../Model/userModel')
 
 const accessChat = asyncHandler(async (req, res) => {
-    console.log(req);
     const { userId } = req.body
     if (!userId) {
         console.log("user params is not send with request")
@@ -17,10 +16,10 @@ const accessChat = asyncHandler(async (req, res) => {
             { users: { $elemMatch: { $eq: userId } } }
         ]
 
-    }).populate("users", "-password").populate('latestMassage')
+    }).populate("users", "-password").populate('latestMessage')
 
     isChat = await User.populate(isChat, {
-        path: "latestMassage.sender",
+        path: "latestMessage.sender",
         select: "name pics email",
     })
 
@@ -31,7 +30,6 @@ const accessChat = asyncHandler(async (req, res) => {
             chatName: 'sender',
             isGroupChat: false,
             users: [req.user._id, userId],
-
         }
 
         try {
@@ -51,11 +49,11 @@ const fetchChats = asyncHandler(async (req, res) => {
         Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
             .populate('users', '-password')
             .populate('groupAdmin', '-password')
-            .populate('latestMassage')
+            .populate('latestMessage')
             .sort({ updatedAt: -1 })
             .then(async (results) => {
                 results = await User.populate(results, {
-                    path: "latestMassage.sender",
+                    path: "latestMessage.sender",
                     select: "name pics email",
                 })
                 res.status(200).send(results)
@@ -84,7 +82,7 @@ const createGroupchat = asyncHandler(async (req, res) => {
                 users: users,
                 groupAdmin: req.user
             })
-            const fullGroupChat = await Chat.findOne({ _id: createdChat._id }).populate('users', '-password').populate('latestMassage').populate('groupAdmin', '-password')
+            const fullGroupChat = await Chat.findOne({ _id: createdChat._id }).populate('users', '-password').populate('latestMessage').populate('groupAdmin', '-password')
             res.status(200).send(fullGroupChat)
 
         } catch (error) {

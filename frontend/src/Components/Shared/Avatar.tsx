@@ -12,15 +12,14 @@ interface AvatarProps {
 const Avatar: React.FC<AvatarProps> = ({ avatarSrc, online, name, customStyles }) => {
     const statusClass = online === undefined ? "" : (online === "online" ? "online" : "offline");
     const nameClass = !name ? "placeholder" : "";
-
     return (
         <div className={`avatar ${statusClass} ${nameClass} rounded-lg`} style={customStyles}>
-            {avatarSrc ? (
+            {typeof avatarSrc === "string" ? (
                 <div>
                     <img src={avatarSrc} alt={name || 'Avatar'} />
                 </div>
             ) : (
-                <div className="bg-neutral text-neutral-content rounded-lg w-24 !flex !justify-center !items-center">
+                <div className="bg-neutral text-neutral-content rounded-lg w-12 h-12 !flex !justify-center !items-center">
                     <span className="text-3xl">{name?.charAt(0).toUpperCase()}</span>
                 </div>
             )}

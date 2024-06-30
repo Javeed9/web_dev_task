@@ -1,41 +1,42 @@
-// websocketService.js
-import io from 'socket.io-client';
+// src/Services/socketService.ts
+import io, { Socket } from 'socket.io-client';
+import { IMessage, IUser } from '../Contexts';
 
-class WebSocketService {
-  socket;
-  constructor() {
-    this.socket = io('http://localhost:8000'); // Update with your server URL
+class SocketService {
+  socket: Socket | undefined;
+
+  connect(userData: IUser, setMessages: (messages: IMessage[]) => void) {
+    if (!this.socket) {
+      this.socket = io("http://localhost:5000");
+      this.socket.on('connect', () => {
+        console.log('Connected to WebSocket server!');
+        this.setupListeners(setMessages); // Set up event listeners after connecting
+      });
+      this.socket.emit('setup', userData);
+    }
   }
 
-  setup(userData) {
-    this.socket.emit('setup', userData);
+  disconnect() {
+    if (this.socket) {
+      this.socket.disconnect();
+    }
   }
 
-  joinChat(room) {
-    this.socket.emit('join chat', room);
+  sendMessage(message: any) {
+    console.log(message)
+    this.socket?.emit('newMessage', message);
   }
 
-  sendMessage(newMessage) {
-    this.socket.emit('newMessage', newMessage);
+  joinChat(chatId: string) {
+    this.socket?.emit('join chat', chatId);
   }
 
-  onMessageReceived(callback) {
-    this.socket.on('messageReceived', callback);
+  setupListeners(setMessages: (messages: IMessage[]) => void) {
+    this.socket?.on('messageReceived', (newMessage: IMessage) => {
+      console.log(newMessage);
+      setMessages(prev => [...prev, newMessage]);
+    });
   }
-
-  onTyping(room) {
-    this.socket.emit('typing', room);
-  }
-
-  onStopTyping(room) {
-    this.socket.emit('stop typing', room);
-  }
-
-  onConnected(callback) {
-    this.socket.on('connected', callback);
-  }
-
 }
 
-const socketService = new WebSocketService();
-export default socketService;
+export const socketService = new SocketService();

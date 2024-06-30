@@ -4,13 +4,14 @@ import Card from './Shared/Card'
 import { accessChat, fetchChats } from '../Services/chatApi'
 import { useGlobalContext } from '../Contexts'
 import { getAllMessages } from '../Services/messageApi'
+import { socketService } from '../Services/WebSocket'
 
 function ChatList() {
 
   const [contacts, setContacts] = useState([])
   const [showContacts, setShowContacts] = useState(true)
   const [chats, setChats] = useState([])
-  const { user: {_id: userId}, setMessages } = useGlobalContext()
+  const { user: {_id: userId}, setMessages, setChatId } = useGlobalContext()
   useEffect(() => {
     const fetchAndSetChats = async () => {
       const response = await fetchChats();
@@ -49,17 +50,34 @@ function ChatList() {
         { showContacts ? (chats.map( (user) => (
           <Card
           onClick = {async () => {
-            const response = accessChat(user._id)
-            const messages = await getAllMessages(response._id)
-            setMessages(messages)
+            try {
+              socketService.joinChat(user._id);
+              const response = await accessChat(user._id);
+              const messages = await getAllMessages(response._id);
+              console.log(response._id);
+              setChatId(response._id);
+              setMessages(messages);
+              console.log(response._id);
+            } catch (error) {
+              console.error("Error joining chat or fetching messages:", error);
+            }
           }}
           name={user.users[0]._id === userId ? user.users[1].name : user.users[0].name} lastMessage={user.lastMessage} lastMessageTime={user.lastMessageTime} online="online" unread={user.unread} isTyping={user.isTyping} customStyles={{backgroundColor: `${user.isHighlight && '#1F2022'}`}}/>
         )) ) : (contacts.map ( (user) => (
-          <div onClick={async () => {
-            const response = accessChat(user._id)
-            const messages = await getAllMessages(response._id)
-            setMessages(messages)
-          }}>
+          <div 
+          onClick = {async () => {
+            try {
+              socketService.joinChat(user._id);
+              const response = await accessChat(user._id);
+              const messages = await getAllMessages(response._id);
+              console.log(response._id);
+              setChatId(response._id);
+              setMessages(messages);
+            } catch (error) {
+              console.error("Error joining chat or fetching messages:", error);
+            }
+          }}
+          >
             <Card name={user.name} />
           </div>
         )))}

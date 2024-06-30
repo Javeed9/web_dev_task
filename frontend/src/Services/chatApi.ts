@@ -10,6 +10,7 @@ export const accessChat = async (userId: string) => {
         'userId': userId
       })
   });
+
   return await response.json();
 };
 export const fetchChats = async () => {
@@ -21,5 +22,6 @@ export const fetchChats = async () => {
           'Authorization': `Bearer ${token}`
       }
   });
+  
   return await response.json();
 };

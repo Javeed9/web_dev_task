@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { getAllMessages, sendMessage } from '../Services/messageApi';
 import ChatMessage from './Shared/ChatMessage';
 import { useGlobalContext } from '../Contexts';
+import { socketService } from '../Services/WebSocket';
 
-function Chat({chatId="6677ed1ce70a3576961ba3be"}: {chatId: string}) {
+function Chat({chatId}: {chatId: string}) {
   const [textContent, setTextContent] = useState('');
   const { messages } = useGlobalContext();
-  console.log(messages);
+  // console.log(messages);
   return (
     <div
     className='w-[calc(100%-390px)] h-[95vh] absolute top-[2.5vh] left-[365px] border border-[white] bg-[#1F2022] rounded-md'
@@ -21,12 +22,14 @@ function Chat({chatId="6677ed1ce70a3576961ba3be"}: {chatId: string}) {
       <div className='flex w-full absolute bottom-4 left-[2.5%] gap-[2.5%]'>
       <input type="text" placeholder="Type here"
       className="input input-bordered rounded-md w-[85%]"
+      value={textContent}
       onChange={(e) => setTextContent(e.target.value)}
       />
       <button
-      onClick={() => {
-        sendMessage(textContent, chatId)
+      onClick={async () => {
         setTextContent('');
+        const messgae = await sendMessage(textContent, chatId)
+        socketService.sendMessage(messgae);
       }}
       className="btn btn-success w-[7.5%] h-5">Send</button>
       </div>

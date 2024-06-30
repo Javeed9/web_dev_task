@@ -1,12 +1,13 @@
 import Chat from '../Components/Chat'
 import Sidebar from '../Components/Sidebar'
+import { useGlobalContext } from '../Contexts'
 
 function Home() {
-
+  const {chatId} = useGlobalContext()
   return (
     <div>
         <Sidebar />
-        <Chat />
+        <Chat chatId={chatId}/>
     </div>
   )
 }
